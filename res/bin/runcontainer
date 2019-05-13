@@ -1,0 +1,6 @@
+DIR=$( cd $( dirname $0 ) && pwd )
+IMGNAME="sequelize-i18n"
+
+docker build ${DIR}/../ -t $IMGNAME
+
+docker run --rm -ti -v ${DIR}/../../:/src $IMGNAME bash
