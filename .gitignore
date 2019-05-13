@@ -2,3 +2,7 @@
 /.idea
 .DS_Store
 *.log*
+
+# babel build dir
+/dist/*
+!/dist/.gitkeep

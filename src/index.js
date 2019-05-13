@@ -169,10 +169,10 @@ export default class SequelizeI18N {
   }
 
   afterCreate() {
-    return (instance, options, fn) => {
+    return (instance, options) => {
       const i18nModel = this.getI18NModel(this.name);
 
-      if (i18nModel === null) return fn();
+      if (i18nModel === null) return;
 
       const i18nOptions = {};
 
@@ -200,14 +200,12 @@ export default class SequelizeI18N {
           // TODO: probably a bad key mapping here.
           defaults: i18nOptions,
         })
-        .then(() =>
-          instance
-            .reload()
-            .then(() => fn()))
+        .then(() => instance.reload())
         .catch(error =>
           instance
             .destroy({ force: true })
-            .then(() => fn(error)));
+            .then(() => { throw error })
+        );
     };
   }
 
@@ -228,11 +226,11 @@ export default class SequelizeI18N {
     });
   }
 
-  afterDelete() {
-    return (instance, options, fn) => {
+  afterDestroy() {
+    return (instance, options) => {
       const i18nModel = this.getI18NModel(this.name);
 
-      if (i18nModel === null) return fn();
+      if (i18nModel === null) return;
 
       return this
         .sequelize
@@ -241,17 +239,15 @@ export default class SequelizeI18N {
           where: {
             parent_id: instance.id,
           },
-        })
-        .then(() => fn())
-        .catch(error => fn(error));
+        });
     };
   }
 
   afterUpdate() {
-    return (instance, options, fn) => {
+    return (instance, options) => {
       const i18nModel = this.getI18NModel(this.name);
 
-      if (i18nModel === null) return fn();
+      if (i18nModel === null) return;
 
       const i18nOptions = {};
 
@@ -271,10 +267,7 @@ export default class SequelizeI18N {
         .sequelize
         .models[i18nModel.name]
         .upsert(i18nOptions)
-        .then(() =>
-          instance
-            .reload()
-            .then(() => fn()));
+        .then(() => instance.reload());
     };
   }
 
@@ -353,7 +346,7 @@ export default class SequelizeI18N {
         mutableOptions.hooks.beforeFind = this.beforeFind();
         mutableOptions.hooks.afterCreate = this.afterCreate();
         mutableOptions.hooks.afterUpdate = this.afterUpdate();
-        mutableOptions.hooks.afterDelete = this.afterDelete();
+        mutableOptions.hooks.afterDestroy = this.afterDestroy();
       }
     });
   }

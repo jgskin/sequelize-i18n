@@ -1,6 +1,6 @@
 # Sequelize i18n
 
-> Easy internalization using Sequelize
+> Easy internalization using Sequelize >= v5
 
 ## Usage
 
@@ -119,7 +119,20 @@ productInstance
     // ...
   });
 ```
-    
+
+
+## Development environment
+
+To use the included dev env, install [Docker](https://www.docker.com/) and start env with:
+
+```shell
+res/bin/runcontainer
+```
+
+## Known Issues
+
+Npm build script fails on Docker, see https://github.com/npm/npm/issues/17346 for more details.
+
 ## License
 
 The MIT License (MIT)

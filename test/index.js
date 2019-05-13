@@ -110,8 +110,8 @@ describe('SequelizeI18N', () => {
       .then((result) => {
         result.should.not.equal(null);
         result.length.should.equal(2);
-        result[0].should.equal('model');
-        result[1].should.equal('model_i18ns');
+        result[0].name.should.equal('model');
+        result[1].name.should.equal('model_i18ns');
 
         done();
       })
@@ -131,7 +131,7 @@ describe('SequelizeI18N', () => {
 
   it('should return i18n values', () =>
     TestModel
-      .findById(1)
+      .findByPk(1)
       .then((result) => {
         result.should.have.property('model_i18n');
         result.model_i18n.length.should.equal(1);
