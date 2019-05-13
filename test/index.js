@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import chai from 'chai';
 
-import SequelizeI18N from '../';
+import SequelizeI18N from '../src';
 import Model from './Model';
 
 chai.should();
